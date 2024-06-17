@@ -1,0 +1,9 @@
+@RestApi()
+abstract class MisskeyApi {
+  factory MisskeyApi(Dio dio, {String baseUrl}) = _MisskeyApi;
+  @POST("/api/miauth/{session}/check")
+  Future<CheckAuthResponse> checkAuth(@Path() String session);
+
+  @POST("/api/notes/hybrid-timeline")
+  Future<List<Note>> getHybridTimeline(@Body() TimelineRequest request);
+}
