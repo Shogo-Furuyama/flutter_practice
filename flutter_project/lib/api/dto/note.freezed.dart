@@ -69,6 +69,7 @@ abstract class $NoteCopyWith<$Res> {
       List<String>? fileIds,
       String? myReaction});
 
+  $UserCopyWith<$Res> get user;
   $NoteCopyWith<$Res>? get reply;
   $NoteCopyWith<$Res>? get renote;
 }
@@ -93,7 +94,7 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
     Object? replyId = freezed,
     Object? renoteId = freezed,
     Object? viaMobile = freezed,
-    Object? user = freezed,
+    Object? user = null,
     Object? visibility = null,
     Object? createdAt = null,
     Object? reactions = freezed,
@@ -134,7 +135,7 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
           ? _value.viaMobile
           : viaMobile // ignore: cast_nullable_to_non_nullable
               as bool?,
-      user: freezed == user
+      user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
@@ -179,6 +180,14 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
           : myReaction // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res> get user {
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 
   @override
@@ -234,6 +243,8 @@ abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
       String? myReaction});
 
   @override
+  $UserCopyWith<$Res> get user;
+  @override
   $NoteCopyWith<$Res>? get reply;
   @override
   $NoteCopyWith<$Res>? get renote;
@@ -256,7 +267,7 @@ class __$$NoteImplCopyWithImpl<$Res>
     Object? replyId = freezed,
     Object? renoteId = freezed,
     Object? viaMobile = freezed,
-    Object? user = freezed,
+    Object? user = null,
     Object? visibility = null,
     Object? createdAt = null,
     Object? reactions = freezed,
@@ -297,7 +308,7 @@ class __$$NoteImplCopyWithImpl<$Res>
           ? _value.viaMobile
           : viaMobile // ignore: cast_nullable_to_non_nullable
               as bool?,
-      user: freezed == user
+      user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
@@ -446,7 +457,7 @@ class _$NoteImpl extends _Note {
                 other.renoteId == renoteId) &&
             (identical(other.viaMobile, viaMobile) ||
                 other.viaMobile == viaMobile) &&
-            const DeepCollectionEquality().equals(other.user, user) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.visibility, visibility) ||
                 other.visibility == visibility) &&
             (identical(other.createdAt, createdAt) ||
@@ -477,7 +488,7 @@ class _$NoteImpl extends _Note {
       replyId,
       renoteId,
       viaMobile,
-      const DeepCollectionEquality().hash(user),
+      user,
       visibility,
       createdAt,
       const DeepCollectionEquality().hash(_reactions),

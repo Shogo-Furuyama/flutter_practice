@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_project/api/constants.dart';
+import 'package:flutter_project/lib/api/constants.dart';
 import 'package:flutter_project/api/dto/note.dart';
 import 'package:flutter_project/api/dto/timeline_request.dart';
 import 'package:flutter_project/api/misskey_api.dart';
