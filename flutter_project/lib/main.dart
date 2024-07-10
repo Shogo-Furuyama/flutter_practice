@@ -30,38 +30,73 @@ class _MyHomePageState extends State<MyHomePage> {
   String newNoteText = '';
 
   Future<void> _fetchNotes() async {
+    DateTime nowtime = DateTime.now();
+    Duration duration =
+        Duration(minutes: -30); // -30分間のDurationオブジェクトを作成 (30分前を表す)
+    DateTime sinceTime = nowtime.add(duration); // 変更した日時を取得
+    int Int_nowtime = nowtime.millisecondsSinceEpoch ~/ 1000;
+    int Int_sinceTime = sinceTime.millisecondsSinceEpoch ~/ 1000;
+    print(Int_nowtime);
+    print(Int_sinceTime);
+
+    const url = 'https://misskey.io/api/notes/create';
+    final body = jsonEncode({
+      'text': 'Hello Misskey API World with My Application!',
+    });
+    final headers = {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+    };
+
     final response = await http.post(
-      Uri.parse('https://misskey.io/api/notes/hybrid-timeline'),
-      headers: {'Authorization': 'Bearer $accessToken'},
+      Uri.parse(url),
+      headers: headers,
+      body: body,
     );
-    print(response);
+
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as List<dynamic>;
-      setState(() {
-        notes = json.map((note) => Note.fromJson(note)).toList();
-      });
+      // Note created successfully
+      print('Note created successfully!');
     } else {
-      // エラー処理
-      print('Failed to fetch notes: ${response.statusCode}');
+      // Error creating note
+      print('Error creating note: ${response.statusCode}');
     }
   }
 
   Future<void> _postNote() async {
+    const url = 'https://misskey.io/api/notes/create';
+    final body = jsonEncode({
+      'text': 'APIクライアントてすと',
+    });
+    final headers = {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+    };
+
     final response = await http.post(
-      Uri.parse('https://misskey.io/api/notes'),
-      headers: {'Authorization': 'Bearer $accessToken'},
-      body: jsonEncode({'text': newNoteText}),
+      Uri.parse(url),
+      headers: headers,
+      body: body,
     );
 
     if (response.statusCode == 200) {
-      // 投稿成功処理
-      setState(() {
-        newNoteText = '';
-        notes.insert(0, Note.fromJson(jsonDecode(response.body)));
-      });
+      // Note created successfully
+      print('Note created successfully!');
+    } else if (response.statusCode == 401) {
+      // Authentication error
+      final errorJson = jsonDecode(response.body) as Map<String, dynamic>;
+      final errorCode = errorJson['error']['code'];
+
+      if (errorCode == 'CREDENTIAL_REQUIRED') {
+        // Handle credential required error
+        print('Credential required error!');
+      } else {
+        // Handle other authentication errors
+        print('Authentication error: $errorCode');
+      }
     } else {
-      // エラー処理
-      print('Failed to post note: ${response.statusCode}');
+      // Other errors
+      print('Error creating note: ${response.statusCode}');
     }
   }
 
