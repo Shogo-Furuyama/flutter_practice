@@ -33,6 +33,8 @@
 - 詳細は以下のURLから参照
 
 https://zenn.dev/panta/articles/b16e7a3be8aded
+//2024･7･3時点で廃止
+
 
 原則MisskeyのAPI仕様により
 
