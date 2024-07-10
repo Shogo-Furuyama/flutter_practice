@@ -35,7 +35,6 @@
 https://zenn.dev/panta/articles/b16e7a3be8aded
 //2024･7･3時点で廃止
 
-
 原則MisskeyのAPI仕様により
 
 ログイン→タイムライン閲覧と呟きができる
@@ -48,3 +47,7 @@ https://zenn.dev/panta/articles/b16e7a3be8aded
   - 開発用ブランチ
 - backup
   - バックアップ用ブランチ
+
+## プレゼン用資料
+
+https://docs.google.com/presentation/d/12gfNOQYTUqwEysWee5ocup7lgWJG_BFBA70ihQUmAuI/edit?usp=sharing
