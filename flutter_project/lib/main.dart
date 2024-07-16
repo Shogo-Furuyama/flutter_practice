@@ -11,12 +11,14 @@ class Note {
   final String text;
   final User user;
   final String userId;
+  final String createDate;
 
   // Note class constructor
   Note({
     required this.text,
     required this.user,
     required this.userId,
+    required this.createDate,
   });
 
   // NoteクラスからMap<String, dynamic>への変換
@@ -25,6 +27,7 @@ class Note {
       'text': text,
       'user': user.toMap(),
       'userId': userId,
+      'createDate': createDate,
     };
   }
 
@@ -34,6 +37,7 @@ class Note {
       text: map['text'] as String,
       user: User.fromMap(map['user'] as Map<String, dynamic>),
       userId: map['userId'] as String,
+      createDate: map['createDate'] as String,
     );
   }
 }
@@ -88,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _fetchNotes() async {
     DateTime nowtime = DateTime.now();
     Duration duration =
-        Duration(minutes: -30); // -30分間のDurationオブジェクトを作成 (30分前を表す)
+        Duration(minutes: -5); // -10分間のDurationオブジェクトを作成 (30分前を表す)
     DateTime sinceTime = nowtime.add(duration); // 変更した日時を取得
     int Int_nowtime = nowtime.millisecondsSinceEpoch ~/ 1000;
     int Int_sinceTime = sinceTime.millisecondsSinceEpoch ~/ 1000;
@@ -100,7 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
       "withFiles": false,
       "withRenotes": false,
       "withReplies": false,
-      "limit": 10,
+      "limit": 30,
+      "allowPartial": true,
       "sinceDate": Int_sinceTime,
     });
     final headers = {
@@ -124,13 +129,20 @@ class _MyHomePageState extends State<MyHomePage> {
       for (final noteMap in responseBody) {
         // text、user、userIdを抽出
         final text = noteMap['text']?.toString() ?? 'なし';
+
         final userMap = noteMap['user'] as Map<String, dynamic>?;
         final username = userMap?['name']?.toString() ?? '名無し';
+
         final userId = noteMap['userId']?.toString() ?? '';
+        final createDate = noteMap['createdAt']?.toString() ?? '';
 
         // 抽出した情報を元にNoteオブジェクトを作成
-        final note =
-            Note(text: text, user: User(username: username), userId: userId);
+        final note = Note(
+          text: text,
+          user: User(username: username),
+          userId: userId,
+          createDate: createDate,
+        );
 
         // 作成したNoteオブジェクトをnotes配列に追加
         notes.add(note);
@@ -210,12 +222,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: notes.length <= 10 ? notes.length : 10,
+              itemCount: notes.length,
               itemBuilder: (context, index) {
                 final note = notes[index];
                 return ListTile(
                   title: Text(note.user.username),
-                  subtitle: Text(note.text),
+                  subtitle: Text(note.text + '\n' + note.createDate),
                 );
               },
             ),
