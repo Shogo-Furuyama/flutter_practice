@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _fetchNotes() async {
     DateTime nowtime = DateTime.now();
     Duration duration =
-        Duration(minutes: -5); // -10分間のDurationオブジェクトを作成 (30分前を表す)
+        Duration(minutes: -5); // -5分間のDurationオブジェクトを作成 (30分前を表す)
     DateTime sinceTime = nowtime.add(duration); // 変更した日時を取得
     int Int_nowtime = nowtime.millisecondsSinceEpoch ~/ 1000;
     int Int_sinceTime = sinceTime.millisecondsSinceEpoch ~/ 1000;
